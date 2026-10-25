@@ -39,33 +39,33 @@ public enum DeveloperPortalError: Error, LocalizedError, Sendable {
 
     public var errorDescription: String? {
         switch self {
-        case .unknown(let cause):                               return cause ?? "An unknown error occurred."
-        case .invalidParameters(let cause):                     return "The provided parameters are invalid: \(cause)"
-        case .incorrectCredentials(let cause):                  return cause ?? "Your Apple ID or password is incorrect."
-        case .noTeams:                                          return "You are not a member of any development teams."
-        case .appSpecificPasswordRequired(let cause):           return cause ?? "An app-specific password is required. You can create one at appleid.apple.com."
-        case .invalidDeviceID(let id):                          return "This device's UDID is invalid: \(id)"
-        case .deviceAlreadyRegistered(let cause):               return "This device is already registered: \(cause)"
-        case .invalidCertificateRequest(let cause):             return "The certificate request is invalid: \(cause)"
-        case .certificateDoesNotExist(let serial):              return "There is no certificate with serial number '\(serial)' for this team."
-        case .invalidAppIDName(let name):                       return "The App ID name contains invalid characters: '\(name)'"
-        case .invalidBundleIdentifier(let bundleID):            return "The bundle identifier is invalid: '\(bundleID)'"
-        case .bundleIdentifierUnavailable(let cause):           return "Bundle identifier unavailable: \(cause)"
-        case .appIDDoesNotExist(let id):                        return "There is no App ID with identifier '\(id)' on this team."
-        case .maximumAppIDLimitReached(let cause):              return "Maximum App ID limit reached: \(cause)"
-        case .invalidAppGroup(let group):                       return "The provided app group is invalid: '\(group)'"
-        case .appGroupDoesNotExist(let group):                  return "App group does not exist: '\(group)'"
-        case .invalidProvisioningProfileIdentifier(let id):     return "The identifier for the requested provisioning profile is invalid: '\(id)'"
-        case .provisioningProfileDoesNotExist(let id):          return "There is no provisioning profile with identifier '\(id)' on this team."
-        case .requiresTwoFactorAuthentication:                  return "This account requires signing in with two-factor authentication."
-        case .userCancelled:                                    return "The operation was cancelled by the user."
-        case .incorrectVerificationCode(let cause):             return cause ?? "Incorrect verification code."
+        case .unknown(let cause):                               return cause ?? "发生了未知错误。"
+        case .invalidParameters(let cause):                     return "提供的参数无效：\(cause)"
+        case .incorrectCredentials(let cause):                  return cause ?? "你的 Apple ID 或密码不正确。"
+        case .noTeams:                                          return "你尚未加入任何开发者团队。"
+        case .appSpecificPasswordRequired(let cause):           return cause ?? "需要应用专用密码。你可以前往 appleid.apple.com 创建。"
+        case .invalidDeviceID(let id):                          return "此设备的 UDID 无效：\(id)"
+        case .deviceAlreadyRegistered(let cause):               return "此设备已注册：\(cause)"
+        case .invalidCertificateRequest(let cause):             return "证书请求无效：\(cause)"
+        case .certificateDoesNotExist(let serial):              return "此团队中没有序列号为“\(serial)”的证书。"
+        case .invalidAppIDName(let name):                       return "App ID 名称包含无效字符：“\(name)”"
+        case .invalidBundleIdentifier(let bundleID):            return "Bundle 标识符无效：“\(bundleID)”"
+        case .bundleIdentifierUnavailable(let cause):           return "Bundle 标识符不可用：\(cause)"
+        case .appIDDoesNotExist(let id):                        return "此团队中没有标识符为“\(id)”的 App ID。"
+        case .maximumAppIDLimitReached(let cause):              return "已达 App ID 数量上限：\(cause)"
+        case .invalidAppGroup(let group):                       return "提供的 App 组无效：“\(group)”"
+        case .appGroupDoesNotExist(let group):                  return "App 组不存在：“\(group)”"
+        case .invalidProvisioningProfileIdentifier(let id):     return "请求的配置文件标识符无效：“\(id)”"
+        case .provisioningProfileDoesNotExist(let id):          return "此团队中没有标识符为“\(id)”的配置文件。"
+        case .requiresTwoFactorAuthentication:                  return "此账号需要使用双重认证登录。"
+        case .userCancelled:                                    return "操作已被用户取消。"
+        case .incorrectVerificationCode(let cause):             return cause ?? "验证码不正确。"
         case .tooManyAttempts(let cause):                       return cause
-        case .authenticationHandshakeFailed(let cause):         return "Authentication handshake failed: \(cause)"
-        case .invalidAnisetteData(let cause):                   return "Invalid anisette data: \(cause)"
-        case .tooManyCertificates(let cause):                   return "Maximum number of certificates reached: \(cause)"
+        case .authenticationHandshakeFailed(let cause):         return "认证握手失败：\(cause)"
+        case .invalidAnisetteData(let cause):                   return "Anisette 数据无效：\(cause)"
+        case .tooManyCertificates(let cause):                   return "已达证书数量上限：\(cause)"
         case .accountRepairRequired(_, let message):            return message.isEmpty ? Constants.defaultAccountRepairMessage : message
-        case .invalid2FAResponse(let cause):                    return cause ?? "Invalid two-factor authentication response."
+        case .invalid2FAResponse(let cause):                    return cause ?? "双重认证响应无效。"
         }
     }
 }
@@ -87,9 +87,9 @@ public enum ServerError: LocalizedError, CustomStringConvertible, Sendable {
 
     public var errorDescription: String? {
         switch self {
-        case .badServerResponse(let reason, let jsonPayload): return "Invalid server response: \(reason)\n\(jsonPayload)"
-        case .invalidResponseFormat(let rawPayload):          return "Invalid server response: unparseable format\n\(rawPayload)"
-        case .missingKey(let key, let jsonPayload):           return "Invalid server response: missing required key '\(key)'\n\(jsonPayload)"
+        case .badServerResponse(let reason, let jsonPayload): return "服务器响应无效：\(reason)\n\(jsonPayload)"
+        case .invalidResponseFormat(let rawPayload):          return "服务器响应无效：格式无法解析\n\(rawPayload)"
+        case .missingKey(let key, let jsonPayload):           return "服务器响应无效：缺少必需的键“\(key)”\n\(jsonPayload)"
         case .underlyingError(let code, let message):         return "\(message) (\(code))"
         }
     }
@@ -104,11 +104,11 @@ public enum SignerError: Error, LocalizedError, Sendable {
 
     public var errorDescription: String? {
         switch self {
-        case .unknown(let cause):                               return cause ?? "An unknown error occurred during signing."
-        case .invalidApp(let cause):                            return "The app is invalid: \(cause)"
-        case .missingAppBundle(let path):                       return "The provided path does not contain an app bundle: \(path)"
-        case .missingInfoPlist(let path):                       return "The provided app is missing its Info.plist: \(path)"
-        case .missingProvisioningProfile(let bundleIdentifier): return "Could not find matching provisioning profile for bundle identifier '\(bundleIdentifier)'."
+        case .unknown(let cause):                               return cause ?? "签名过程中发生未知错误。"
+        case .invalidApp(let cause):                            return "应用无效：\(cause)"
+        case .missingAppBundle(let path):                       return "提供的路径中不包含应用包：\(path)"
+        case .missingInfoPlist(let path):                       return "提供的应用缺少 Info.plist：\(path)"
+        case .missingProvisioningProfile(let bundleIdentifier): return "找不到与 Bundle 标识符“\(bundleIdentifier)”匹配的配置文件。"
         }
     }
 }
@@ -122,11 +122,11 @@ public enum CertificateError: Error, LocalizedError, Sendable {
 
     public var errorDescription: String? {
         switch self {
-        case .csrGenerationFailed(let cause):  return "CSR generation failed: \(cause)"
-        case .pkcs12ImportFailed(let cause):   return "PKCS#12 import failed: \(cause)"
-        case .pkcs12ExportFailed(let cause):   return "PKCS#12 export failed: \(cause)"
-        case .decryptionFailed(let cause):     return "Decryption failed: \(cause ?? "Incorrect password")"
-        case .invalidData(let cause):          return "Invalid certificate data: \(cause)"
+        case .csrGenerationFailed(let cause):  return "CSR 生成失败：\(cause)"
+        case .pkcs12ImportFailed(let cause):   return "PKCS#12 导入失败：\(cause)"
+        case .pkcs12ExportFailed(let cause):   return "PKCS#12 导出失败：\(cause)"
+        case .decryptionFailed(let cause):     return "解密失败：\(cause ?? "密码不正确")"
+        case .invalidData(let cause):          return "证书数据无效：\(cause)"
         }
     }
 }

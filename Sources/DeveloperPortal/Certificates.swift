@@ -45,7 +45,7 @@ public extension DeveloperPortal {
         verboseLog("[SideSign] MachineName: '\(machineName)', Type: \(type.displayName), Team: \(team.name)")
 
         if team.type == .free && type.isPaidOnly {
-            throw DeveloperPortalError.invalidParameters(cause: "Free Apple Developer accounts cannot create \(type.displayName) certificates. Only Apple Development certificates are supported.")
+            throw DeveloperPortalError.invalidParameters(cause: "免费 Apple 开发者账号无法创建\(type.displayName)证书，仅支持 Apple 开发证书。")
         }
 
         let certRequest: CertificateRequest
@@ -103,7 +103,7 @@ public extension DeveloperPortal {
                 return false
             }) else {
                 debugLog("[SideSign] addCertificate error: Failed to retrieve new certificate from Developer Portal")
-                throw ServerError.badServerResponse(reason: "Failed to retrieve new certificate from Developer Portal", jsonPayload: "")
+                throw ServerError.badServerResponse(reason: "无法从开发者门户获取新证书", jsonPayload: "")
             }
             cert = matchedCert
         }

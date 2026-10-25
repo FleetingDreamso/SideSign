@@ -272,7 +272,7 @@ public final class DeveloperPortal: DeveloperPortalAPI, Sendable {
 
         guard let developer = response.developer else {
             debugLog("[SideSign] fetchAccount error: Missing developer account information in response")
-            throw ServerError.badServerResponse(reason: "Missing developer account information", jsonPayload: "")
+            throw ServerError.badServerResponse(reason: "缺少开发者账号信息", jsonPayload: "")
         }
 
         let account = developer.toAccount()
@@ -359,7 +359,7 @@ public final class DeveloperPortal: DeveloperPortalAPI, Sendable {
                 }
             }
             debugLog("[SideSign] sendRequest server returned 0 bytes (HTTP \(statusCode))")
-            throw ServerError.badServerResponse(reason: "Server returned empty response (Content-Length: 0)", jsonPayload: "0 bytes")
+            throw ServerError.badServerResponse(reason: "服务器返回空响应（Content-Length: 0）", jsonPayload: "0 bytes")
         }
 
         if let payloadString = formatPayload(data) {
@@ -373,7 +373,7 @@ public final class DeveloperPortal: DeveloperPortalAPI, Sendable {
                 throw ServerError.underlyingError(code: -1, message: detail)
             }
             if let code = status.resultCode, code != DeveloperPortalResultCodes.success {
-                let message = status.userString ?? status.resultString ?? status.errorString ?? "Apple Developer Portal Error"
+                let message = status.userString ?? status.resultString ?? status.errorString ?? "Apple 开发者门户错误"
                 if let customError = resultCodeHandler?(code, message) {
                     debugLog("[SideSign] processResponse error (code: \(code)): \(customError.localizedDescription)")
                     throw customError
@@ -474,7 +474,7 @@ public final class DeveloperPortal: DeveloperPortalAPI, Sendable {
                 }
             }
             debugLog("[SideSign] sendServicesRequest server returned 0 bytes (HTTP \(statusCode))")
-            throw ServerError.badServerResponse(reason: "Server returned empty response", jsonPayload: "0 bytes")
+            throw ServerError.badServerResponse(reason: "服务器返回空响应", jsonPayload: "0 bytes")
         }
 
         if let payloadString = formatPayload(data) {
@@ -487,7 +487,7 @@ public final class DeveloperPortal: DeveloperPortalAPI, Sendable {
                 throw ServerError.underlyingError(code: -1, message: detail)
             }
             if let code = status.resultCode, code != DeveloperPortalResultCodes.success {
-                let message = status.userString ?? status.resultString ?? status.errorString ?? "Apple Developer Portal Error"
+                let message = status.userString ?? status.resultString ?? status.errorString ?? "Apple 开发者门户错误"
                 if let customError = resultCodeHandler?(code, message) {
                     debugLog("[SideSign] processResponse error (code: \(code)): \(customError.localizedDescription)")
                     throw customError

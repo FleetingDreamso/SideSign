@@ -587,15 +587,15 @@ public enum Archive {
         public var errorDescription: String? {
             switch self {
             case .fileNotFound(let url):
-                return "File not found: \(url.lastPathComponent)"
+                return "找不到文件：\(url.lastPathComponent)"
             case .corruptArchive(let url):
-                return "Archive appears to be corrupt: \(url.lastPathComponent)"
+                return "归档文件似乎已损坏：\(url.lastPathComponent)"
             case .readFailed(let url):
-                return "Failed to read archive: \(url.lastPathComponent)"
+                return "读取归档失败：\(url.lastPathComponent)"
             case .writeFailed(let url):
-                return "Failed to write archive: \(url.lastPathComponent)"
+                return "写入归档失败：\(url.lastPathComponent)"
             case .missingAppBundle(let url):
-                return "No .app bundle found inside \(url.lastPathComponent)"
+                return "\(url.lastPathComponent) 中未找到 .app 应用包"
             }
         }
     }

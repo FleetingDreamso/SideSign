@@ -32,8 +32,8 @@ public enum Constants {
         public static let userAgent               = "Xcode"
     }
 
-    public static let defaultAccountRepairMessage = "Your Apple ID requires account verification or terms agreement.\n" + 
-                                                    "Please sign in to developer.apple.com or appleid.apple.com."
+    public static let defaultAccountRepairMessage = "你的 Apple ID 需要完成账号验证或同意条款。\n" + 
+                                                    "请前往 developer.apple.com 或 appleid.apple.com 登录。"
 
     public enum URLs {
         private static let servicesBase             = "https://developerservices2.apple.com/services/\(Constants.DeveloperServices.protocolVersion)"
@@ -201,25 +201,25 @@ public enum HTTPStatusCodes {
     public static func localizedDescription(for statusCode: Int) -> String {
         switch statusCode {
         case badRequest:
-            return "The server rejected the request parameters."
+            return "服务器拒绝了请求参数。"
         case unauthorized:
-            return "Your sign-in session expired or is unauthorized."
+            return "你的登录会话已过期或未获授权。"
         case forbidden:
-            return "Access to this Apple Developer service was denied."
+            return "访问此 Apple 开发者服务被拒绝。"
         case notFound:
-            return "The requested Apple service endpoint could not be found."
+            return "找不到所请求的 Apple 服务端点。"
         case tooManyRequests:
-            return "Too many requests sent to Apple. Please wait a few moments and try again."
+            return "向 Apple 发送的请求过于频繁。请稍候片刻再试。"
         case internalServerError:
-            return "Apple's authentication servers encountered an internal error."
+            return "Apple 认证服务器发生内部错误。"
         case badGateway:
-            return "Apple's servers received an invalid gateway response."
+            return "Apple 服务器收到了无效的网关响应。"
         case serviceUnavailable:
-            return "Apple Developer Portal is temporarily unavailable or undergoing maintenance."
+            return "Apple 开发者门户暂时不可用或正在维护。"
         case gatewayTimeout:
-            return "Apple's servers took too long to respond (connection timed out)."
+            return "Apple 服务器响应超时（连接超时）。"
         default:
-            return "Apple service returned an unexpected error (HTTP \(statusCode))."
+            return "Apple 服务返回了意外错误（HTTP \(statusCode)）。"
         }
     }
 }

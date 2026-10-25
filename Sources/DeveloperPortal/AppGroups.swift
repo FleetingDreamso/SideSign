@@ -41,7 +41,7 @@ public extension DeveloperPortal {
 
         guard let createdGroup = response.applicationGroup else {
             debugLog("[SideSign] addAppGroup error: Missing applicationGroup in response")
-            throw ServerError.badServerResponse(reason: "Missing applicationGroup in response", jsonPayload: "")
+            throw ServerError.badServerResponse(reason: "响应中缺少 applicationGroup", jsonPayload: "")
         }
 
         debugLog("[SideSign] addAppGroup succeeded (\(createdGroup.identifier))")

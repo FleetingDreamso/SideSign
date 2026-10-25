@@ -32,7 +32,7 @@ public struct DeviceType: OptionSet, Sendable, Codable, Equatable, Hashable {
         if contains(.appleWatch)    { return "Apple Watch" }
         if contains(.mac)           { return "Mac" }
         if contains(.visionPro)     { return "Apple Vision Pro" }
-        return "Device"
+        return "设备"
     }
 }
 

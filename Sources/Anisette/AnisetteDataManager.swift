@@ -89,7 +89,7 @@ public enum ODAValue: Codable, Equatable, Sendable {
                 ODAValue.self,
                 DecodingError.Context(
                     codingPath: decoder.codingPath,
-                    debugDescription: "Expected String or ODAInfo dictionary for 'oda'"
+                    debugDescription: "“oda”应为 String 或 ODAInfo 字典"
                 )
             )
         }
@@ -191,43 +191,43 @@ public enum AnisetteError: LocalizedError, Sendable {
     public var errorDescription: String? {
         switch self {
         case .modeNotConfigured:
-            return "No Anisette operating mode is configured. Set activeMode or pass a mode parameter."
+            return "未配置 Anisette 运行模式。请设置 activeMode 或传入 mode 参数。"
         case .invalidServerSourceURL:
-            return "Invalid Anisette server list source URL."
+            return "Anisette 服务器列表源 URL 无效。"
         case .invalidURL:
-            return "Invalid URL provided for Anisette endpoint."
+            return "为 Anisette 端点提供的 URL 无效。"
         case .missingODAEntry:
-            return "No 'oda' configuration found in Anisette servers JSON."
+            return "Anisette 服务器 JSON 中未找到“oda”配置。"
         case .downloadFailed(let reason):
-            return "Failed to download On-Device Anisette package: \(reason)"
+            return "下载设备端 Anisette 软件包失败：\(reason)"
         case .sha256Mismatch(let expected, let actual):
-            return "SHA-256 checksum mismatch for On-Device Anisette package (expected \(expected), got \(actual))."
+            return "设备端 Anisette 软件包的 SHA-256 校验和不匹配（期望 \(expected)，实际 \(actual)）。"
         case .invalidBase64Payload:
-            return "Downloaded On-Device Anisette payload is not valid Base64 data."
+            return "下载的设备端 Anisette 数据不是有效的 Base64 数据。"
         case .decompressionFailed(let reason):
-            return "Failed to decompress On-Device Anisette archive: \(reason)"
+            return "解压设备端 Anisette 归档失败：\(reason)"
         case .missingRequiredLibs(let names):
-            return "Required ADI shared libraries (\(names.joined(separator: ", "))) were not found in the extracted archive."
+            return "解压后的归档中未找到所需的 ADI 共享库（\(names.joined(separator: "、"))）。"
         case .appGroupContainerNotFound:
-            return "Shared App Group container URL could not be resolved."
+            return "无法解析共享 App 组容器 URL。"
         case .providerNotReady(let reason):
-            return "Local Anisette provider is not ready: \(reason)"
+            return "本地 Anisette 提供程序尚未就绪：\(reason)"
         case .invalidAnisetteData:
-            return "Failed to construct valid AnisetteData from local or remote Anisette headers."
+            return "无法从本地或远程 Anisette 请求头构造有效的 AnisetteData。"
         case .badServerResponse(let statusCode, let payload):
-            return "Anisette server returned HTTP status \(statusCode): \(payload)"
+            return "Anisette 服务器返回 HTTP 状态码 \(statusCode)：\(payload)"
         case .noServersConfigured:
-            return "No working anisette servers configured."
+            return "未配置可用的 Anisette 服务器。"
         case .allServersFailed:
-            return "All configured Anisette servers failed to respond with valid Anisette data."
+            return "所有已配置的 Anisette 服务器均未能返回有效的 Anisette 数据。"
         case .outdatedV1Server(let url, let reason):
             if let reason = reason, !reason.isEmpty {
-                return "V3 Anisette is unavailable on '\(url.absoluteString)' (\(reason)). Operating in legacy V1 mode (shared device identity)."
+                return "服务器“\(url.absoluteString)”不支持 V3 Anisette（\(reason)），将使用旧版 V1 模式（共享设备身份）。"
             } else {
-                return "Anisette server '\(url.absoluteString)' is operating in outdated V1 mode (shared device identity)."
+                return "Anisette 服务器“\(url.absoluteString)”正在使用过时的 V1 模式（共享设备身份）。"
             }
         case .serverListFetchFailed(let reason):
-            return "Failed to fetch server list: \(reason)"
+            return "获取服务器列表失败：\(reason)"
         }
     }
 }
@@ -378,7 +378,7 @@ public final class AnisetteDataManager: @unchecked Sendable {
 
         guard missingKeys.isEmpty else {
             throw DeveloperPortalError.invalidAnisetteData(
-                cause: "Missing required Anisette keys: \(missingKeys.joined(separator: ", "))"
+                cause: "缺少必需的 Anisette 键：\(missingKeys.joined(separator: "、"))"
             )
         }
 
@@ -556,7 +556,7 @@ public final class AnisetteDataManager: @unchecked Sendable {
         let (data, response) = try await URLSession.shared.data(for: request)
         guard let httpResp = response as? HTTPURLResponse, httpResp.isSuccess else {
             let status = (response as? HTTPURLResponse)?.safeStatusCode ?? -1
-            throw AnisetteError.serverListFetchFailed("Server returned HTTP \(status)")
+            throw AnisetteError.serverListFetchFailed("服务器返回 HTTP \(status)")
         }
 
         let decoder = JSONDecoder()
@@ -570,7 +570,7 @@ public final class AnisetteDataManager: @unchecked Sendable {
         let (data, response) = try await URLSession.shared.data(for: request)
         guard let httpResp = response as? HTTPURLResponse, httpResp.isSuccess else {
             let status = (response as? HTTPURLResponse)?.safeStatusCode ?? -1
-            throw AnisetteError.downloadFailed("Server list request failed with HTTP \(status)")
+            throw AnisetteError.downloadFailed("服务器列表请求失败，HTTP \(status)")
         }
 
         let decoder = JSONDecoder()
@@ -604,7 +604,7 @@ public final class AnisetteDataManager: @unchecked Sendable {
         let (odaData, odaResp) = try await URLSession.shared.data(for: odaReq)
         guard let httpOdaResp = odaResp as? HTTPURLResponse, httpOdaResp.isSuccess else {
             let status = (odaResp as? HTTPURLResponse)?.safeStatusCode ?? -1
-            throw AnisetteError.downloadFailed("ODA metadata request failed with HTTP \(status)")
+            throw AnisetteError.downloadFailed("ODA 元数据请求失败，HTTP \(status)")
         }
         return try JSONDecoder().decode(ODAInfo.self, from: odaData)
     }
@@ -661,14 +661,14 @@ public final class AnisetteDataManager: @unchecked Sendable {
             return decoded
         }
         guard let urlStr = oda.url, let downloadURL = URL(string: urlStr) else {
-            throw AnisetteError.downloadFailed("No valid URL or Base64 payload in ODA configuration.")
+            throw AnisetteError.downloadFailed("ODA 配置中没有有效的 URL 或 Base64 数据。")
         }
         var request = URLRequest(url: downloadURL)
         request.cachePolicy = .reloadIgnoringLocalCacheData
         let (downloadedData, response) = try await URLSession.shared.data(for: request)
         guard let httpResp = response as? HTTPURLResponse, httpResp.isSuccess else {
             let status = (response as? HTTPURLResponse)?.safeStatusCode ?? -1
-            throw AnisetteError.downloadFailed("Package download failed with HTTP \(status)")
+            throw AnisetteError.downloadFailed("软件包下载失败，HTTP \(status)")
         }
         if let rawString = String(data: downloadedData, encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines),
            let decoded = Data(base64Encoded: rawString, options: .ignoreUnknownCharacters) {
@@ -708,7 +708,7 @@ public final class AnisetteDataManager: @unchecked Sendable {
             return provider
         }
 
-        throw AnisetteError.providerNotReady("ADI shared libraries missing locally at: \(libDir.path)")
+        throw AnisetteError.providerNotReady("本地缺少 ADI 共享库：\(libDir.path)")
     }
 
     private func computeSHA256(data: Data) -> String {

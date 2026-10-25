@@ -14,7 +14,7 @@ public enum PKCS12Parser {
         do {
             let parser = try CodeSignKit.PKCS12Parser(p12Data: data, password: password ?? "")
             guard let certDER = parser.leafCertificate?.rawDER else {
-                throw CertificateError.pkcs12ImportFailed(cause: "No X.509 certificate in PKCS#12 archive")
+                throw CertificateError.pkcs12ImportFailed(cause: "PKCS#12 归档中没有 X.509 证书")
             }
             return (certDER, parser.privateKeyDER ?? Data())
         } catch {
@@ -24,7 +24,7 @@ public enum PKCS12Parser {
 
     public static func create(cert: Data, key: Data?, password: String?) throws -> Data {
         guard let certDER = CertificateParser.extractDER(cert) else {
-            throw CertificateError.invalidData(cause: "Invalid certificate data")
+            throw CertificateError.invalidData(cause: "证书数据无效")
         }
         let keyDER = key.flatMap { CertificateParser.extractDER($0, boundaryKeyword: "PRIVATE KEY") } ?? key
         do {

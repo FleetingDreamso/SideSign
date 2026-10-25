@@ -29,7 +29,7 @@ public struct InfoPlistParser: Sendable {
 
     public init(data: Data) throws {
         guard let dict = try PropertyListSerialization.propertyList(from: data, format: nil) as? [String: any Sendable] else {
-            throw SignerError.invalidApp(cause: "Invalid PropertyList data format.")
+            throw SignerError.invalidApp(cause: "PropertyList 数据格式无效。")
         }
         self.rawDictionary = dict
     }
@@ -70,7 +70,7 @@ public struct InfoPlistParser: Sendable {
     }
 
     public var appName: String {
-        displayName ?? bundleName ?? "Unknown"
+        displayName ?? bundleName ?? "未知"
     }
 
     public var displayName: String? {

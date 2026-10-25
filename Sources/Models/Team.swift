@@ -88,10 +88,10 @@ public struct Team: Sendable, Codable, Equatable, Hashable, Identifiable {
 public extension TeamType {
     var displayName: String {
         switch self {
-        case .organization: return "Organization"
-        case .individual:   return "Individual"
-        case .free:         return "Free"
-        case .unknown:      return "Unknown"
+        case .organization: return "组织"
+        case .individual:   return "个人"
+        case .free:         return "免费"
+        case .unknown:      return "未知"
         }
     }
 

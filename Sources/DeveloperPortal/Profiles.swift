@@ -84,7 +84,7 @@ public extension DeveloperPortal {
 
             guard let createdProfile = try response.provisioningProfile?.toProvisioningProfile() else {
                 debugLog("[SideSign] createProvisioningProfile error: Missing provisioning profile in create response")
-                throw ServerError.badServerResponse(reason: "Missing provisioning profile in create response", jsonPayload: "")
+                throw ServerError.badServerResponse(reason: "创建响应中缺少描述文件", jsonPayload: "")
             }
 
             debugLog("[SideSign] createProvisioningProfile succeeded")
@@ -135,7 +135,7 @@ public extension DeveloperPortal {
 
             guard let updatedProfile = try response.provisioningProfile?.toProvisioningProfile() else {
                 debugLog("[SideSign] updateProvisioningProfile error: Missing provisioning profile in regen response")
-                throw ServerError.badServerResponse(reason: "Missing provisioning profile in regen response", jsonPayload: "")
+                throw ServerError.badServerResponse(reason: "重新生成响应中缺少描述文件", jsonPayload: "")
             }
 
             debugLog("[SideSign] updateProvisioningProfile succeeded")
@@ -166,7 +166,7 @@ public extension DeveloperPortal {
 
             guard let downloadedProfile = try response.provisioningProfile?.toProvisioningProfile() else {
                 debugLog("[SideSign] downloadProvisioningProfile(profileID:) error: Missing provisioning profile in download response")
-                throw ServerError.badServerResponse(reason: "Missing provisioning profile in download response", jsonPayload: "")
+                throw ServerError.badServerResponse(reason: "下载响应中缺少描述文件", jsonPayload: "")
             }
 
             debugLog("[SideSign] downloadProvisioningProfile(profileID:) succeeded")
@@ -227,7 +227,7 @@ public extension DeveloperPortal {
 
             guard let downloadedProfile = try response.provisioningProfile?.toProvisioningProfile() else {
                 debugLog("[SideSign] downloadProvisioningProfile error: Missing provisioning profile in download response")
-                throw ServerError.badServerResponse(reason: "Missing provisioning profile in download response", jsonPayload: "")
+                throw ServerError.badServerResponse(reason: "下载响应中缺少描述文件", jsonPayload: "")
             }
 
             debugLog("[SideSign] downloadProvisioningProfile succeeded")

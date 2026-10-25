@@ -378,7 +378,7 @@ public struct ListedProvisioningProfile: Decodable, Sendable, Identifiable, Equa
 
         let uuidString = try container.decode(String.self, forKey: .uuid)
         guard let parsedUUID = UUID(uuidString: uuidString) else {
-            throw DecodingError.dataCorruptedError(forKey: .uuid, in: container, debugDescription: "Invalid UUID format: \(uuidString)")
+            throw DecodingError.dataCorruptedError(forKey: .uuid, in: container, debugDescription: "UUID 格式无效：\(uuidString)")
         }
         self.uuid = parsedUUID
 
@@ -388,7 +388,7 @@ public struct ListedProvisioningProfile: Decodable, Sendable, Identifiable, Equa
                   let date = ISO8601DateFormatter().date(from: dateStr) {
             self.dateExpire = date
         } else {
-            throw DecodingError.dataCorruptedError(forKey: .dateExpire, in: container, debugDescription: "Unable to parse dateExpire as Date or ISO8601 string")
+            throw DecodingError.dataCorruptedError(forKey: .dateExpire, in: container, debugDescription: "无法将 dateExpire 解析为日期或 ISO8601 字符串")
         }
 
         self.appId = try container.decodeIfPresent(AppIDPayload.self, forKey: .appId)

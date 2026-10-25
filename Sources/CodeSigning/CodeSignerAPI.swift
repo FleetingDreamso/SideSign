@@ -68,7 +68,7 @@ public struct AppBundleSigner: CodeSignerAPI, Sendable {
         guard let appBundle = AppBundle(fileURL: appURL) else {
             debugLog("[SideSign] AppBundleSigner.signApp error: Failed to parse AppBundle")
             verboseLog("[SideSign] Path: \(appURL.path)")
-            throw SignerError.invalidApp(cause: "Failed to parse AppBundle at \(appURL.path)")
+            throw SignerError.invalidApp(cause: "无法解析应用包：\(appURL.path)")
         }
 
         debugLog("[SideSign] AppBundleSigner.signApp started")
@@ -109,7 +109,7 @@ public struct AppBundleSigner: CodeSignerAPI, Sendable {
                             guard let separator = group.firstIndex(of: ".") else {
                                 debugLog("[SideSign] The keychain access group does not contain a Team ID prefix")
                                 verboseLog("[SideSign] Group: '\(group)'")
-                                throw SignerError.invalidApp(cause: "The keychain access group '\(group)' does not contain a Team ID prefix.")
+                                throw SignerError.invalidApp(cause: "钥匙串访问组“\(group)”不包含团队 ID 前缀。")
                             }
                             return matchedProfile.teamIdentifier + group[separator...]
                         }
@@ -132,7 +132,7 @@ public struct AppBundleSigner: CodeSignerAPI, Sendable {
 
             guard let string = String(data: plist, encoding: .utf8) else {
                 debugLog("[SideSign] AppBundleSigner.prepare error: Failed to convert plist data to XML string")
-                throw SignerError.unknown(cause: "Failed to convert plist data to XML string")
+                throw SignerError.unknown(cause: "将 plist 数据转换为 XML 字符串失败")
             }
 
             verboseLog("[SideSign] Prepared Entitlements XML for \(app.bundleIdentifier):\n\(string)")

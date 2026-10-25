@@ -130,7 +130,7 @@ public struct RemoteAnisetteDataProvider: AnisetteDataProvider, Sendable {
             while true {
                 let json = try await receiveWebSocketJSON(from: webSocketTask)
                 guard let result = json["result"] as? String else {
-                    throw AnisetteError.badServerResponse(statusCode: -1, payload: "Missing result in WebSocket response")
+                    throw AnisetteError.badServerResponse(statusCode: -1, payload: "WebSocket 响应中缺少 result")
                 }
 
                 switch result {
@@ -144,14 +144,14 @@ public struct RemoteAnisetteDataProvider: AnisetteDataProvider, Sendable {
                 case "GiveEndProvisioningData":
                     guard let cpimBase64 = json["cpim"] as? String,
                           let cpimData = Data(base64Encoded: cpimBase64) else {
-                        throw AnisetteError.badServerResponse(statusCode: -1, payload: "Missing or invalid cpim in GiveEndProvisioningData")
+                        throw AnisetteError.badServerResponse(statusCode: -1, payload: "GiveEndProvisioningData 中的 cpim 缺失或无效")
                     }
                     let sessionKey = Self.sessionManager.store(webSocketTask)
                     return (cpimData, sessionKey)
 
                 default:
                     let msg = json["message"] as? String ?? result
-                    throw AnisetteError.badServerResponse(statusCode: -1, payload: "Unexpected remote provisioning step: \(msg)")
+                    throw AnisetteError.badServerResponse(statusCode: -1, payload: "意外的远程配置步骤：\(msg)")
                 }
             }
         } catch {
@@ -169,7 +169,7 @@ public struct RemoteAnisetteDataProvider: AnisetteDataProvider, Sendable {
         tk: [UInt8]
     ) async throws -> Data {
         guard let webSocketTask = Self.sessionManager.retrieve(for: session) else {
-            throw AnisetteError.badServerResponse(statusCode: -1, payload: "Active WebSocket session not found for id \(session)")
+            throw AnisetteError.badServerResponse(statusCode: -1, payload: "未找到 ID 为 \(session) 的活动 WebSocket 会话")
         }
         defer {
             webSocketTask.cancel(with: .normalClosure, reason: nil)
@@ -182,20 +182,20 @@ public struct RemoteAnisetteDataProvider: AnisetteDataProvider, Sendable {
         while true {
             let json = try await receiveWebSocketJSON(from: webSocketTask)
             guard let result = json["result"] as? String else {
-                throw AnisetteError.badServerResponse(statusCode: -1, payload: "Missing result in WebSocket response")
+                throw AnisetteError.badServerResponse(statusCode: -1, payload: "WebSocket 响应中缺少 result")
             }
 
             switch result {
             case "ProvisioningSuccess":
                 guard let adiPbStr = json["adi_pb"] as? String,
                       let adiPbData = Data(base64Encoded: adiPbStr), !adiPbData.isEmpty else {
-                    throw AnisetteError.badServerResponse(statusCode: -1, payload: "Missing/invalid adi_pb in ProvisioningSuccess")
+                    throw AnisetteError.badServerResponse(statusCode: -1, payload: "ProvisioningSuccess 中的 adi_pb 缺失或无效")
                 }
                 return adiPbData
 
             default:
                 let msg = json["message"] as? String ?? result
-                throw AnisetteError.badServerResponse(statusCode: -1, payload: "Remote provisioning end error: \(msg)")
+                throw AnisetteError.badServerResponse(statusCode: -1, payload: "远程配置结束错误：\(msg)")
             }
         }
     }

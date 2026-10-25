@@ -73,14 +73,14 @@ public struct ProvisioningProfile: Sendable, Codable, Equatable, Hashable, Ident
         let uuidString: String = try Self.require("UUID", from: dict)
         guard let uuid = Foundation.UUID(uuidString: uuidString) else {
             throw DecodingError.dataCorrupted(
-                DecodingError.Context(codingPath: [], debugDescription: "Invalid UUID format for '\(uuidString)'")
+                DecodingError.Context(codingPath: [], debugDescription: "UUID 格式无效：\(uuidString)")
             )
         }
 
         let teamIdentifiers: [String] = try Self.require("TeamIdentifier", from: dict)
         guard let teamIdentifier = teamIdentifiers.first else {
             throw DecodingError.dataCorrupted(
-                DecodingError.Context(codingPath: [], debugDescription: "'TeamIdentifier' array is empty")
+                DecodingError.Context(codingPath: [], debugDescription: "TeamIdentifier 数组为空")
             )
         }
 
@@ -97,7 +97,7 @@ public struct ProvisioningProfile: Sendable, Codable, Equatable, Hashable, Ident
 
         guard let resolvedBundleID = bundleID else {
             throw DecodingError.dataCorrupted(
-                DecodingError.Context(codingPath: [], debugDescription: "Missing or invalid 'application-identifier' in Entitlements")
+                DecodingError.Context(codingPath: [], debugDescription: "Entitlements 中缺少 application-identifier 或其无效")
             )
         }
 
@@ -117,13 +117,13 @@ public struct ProvisioningProfile: Sendable, Codable, Equatable, Hashable, Ident
     private static func require<T>(_ key: String, from dict: [String: any Sendable]) throws -> T {
         guard let raw = dict[key] else {
             throw DecodingError.dataCorrupted(
-                DecodingError.Context(codingPath: [], debugDescription: "Missing required key '\(key)'")
+                DecodingError.Context(codingPath: [], debugDescription: "缺少必需的键：\(key)")
             )
         }
         guard let val = raw as? T else {
             throw DecodingError.typeMismatch(
                 T.self,
-                DecodingError.Context(codingPath: [], debugDescription: "Expected key '\(key)' to be of type \(T.self), but found \(type(of: raw))")
+                DecodingError.Context(codingPath: [], debugDescription: "键 \(key) 应为 \(T.self) 类型，实际为 \(type(of: raw))")
             )
         }
         return val
@@ -158,7 +158,7 @@ public struct ProvisioningProfile: Sendable, Codable, Equatable, Hashable, Ident
         let name = try container.decode(String.self, forKey: .name)
         let uuidString = try container.decode(String.self, forKey: .uuid)
         guard let uuid = Foundation.UUID(uuidString: uuidString) else {
-            throw DecodingError.dataCorruptedError(forKey: .uuid, in: container, debugDescription: "Invalid UUID string: \(uuidString)")
+            throw DecodingError.dataCorruptedError(forKey: .uuid, in: container, debugDescription: "UUID 字符串无效：\(uuidString)")
         }
         let bundleID = try container.decode(String.self, forKey: .bundleIdentifier)
         let teamID = try container.decode(String.self, forKey: .teamIdentifier)
@@ -209,14 +209,14 @@ public struct ProvisioningProfile: Sendable, Codable, Equatable, Hashable, Ident
               let plistData = (plistString + "</plist>").data(using: .utf8)
         else {
             throw DecodingError.dataCorrupted(
-                DecodingError.Context(codingPath: [], debugDescription: "Could not find '<?xml' ... '</plist>' boundary in provisioning profile CMS data (\(data.count) bytes)")
+                DecodingError.Context(codingPath: [], debugDescription: "在描述文件的 CMS 数据中找不到 <?xml ... </plist> 边界（共 \(data.count) 字节）")
             )
         }
 
         let raw = try PropertyListSerialization.propertyList(from: plistData, options: [], format: nil)
         guard let dict = raw as? [String: any Sendable] else {
             throw DecodingError.dataCorrupted(
-                DecodingError.Context(codingPath: [], debugDescription: "Provisioning profile XML root is not a dictionary")
+                DecodingError.Context(codingPath: [], debugDescription: "描述文件 XML 根节点不是字典")
             )
         }
         return dict

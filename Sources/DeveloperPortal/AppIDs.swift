@@ -57,7 +57,7 @@ public extension DeveloperPortal {
 
         guard let createdAppID = response.appId else {
             debugLog("[SideSign] addAppID error: Missing appId in response")
-            throw ServerError.badServerResponse(reason: "Missing appId in response", jsonPayload: "")
+            throw ServerError.badServerResponse(reason: "响应中缺少 appId", jsonPayload: "")
         }
 
         debugLog("[SideSign] addAppID succeeded")
@@ -88,7 +88,7 @@ public extension DeveloperPortal {
 
         guard let updatedAppID = response.appId else {
             debugLog("[SideSign] updateAppID error: Missing appId in response")
-            throw ServerError.badServerResponse(reason: "Missing appId in update response", jsonPayload: "")
+            throw ServerError.badServerResponse(reason: "更新响应中缺少 appId", jsonPayload: "")
         }
 
         debugLog("[SideSign] updateAppID succeeded")

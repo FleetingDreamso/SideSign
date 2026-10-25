@@ -49,7 +49,7 @@ public extension DeveloperPortal {
               let publicKey = srpClient.startAuthentication()
         else {
             debugLog("[SideSign] Failed to start SRPClient / generate public key A")
-            throw DeveloperPortalError.authenticationHandshakeFailed(cause: "Failed to start SRPClient / generate public key A")
+            throw DeveloperPortalError.authenticationHandshakeFailed(cause: "启动 SRPClient 或生成公钥 A 失败")
         }
 
         verboseLog("[SideSign] SRPClient started. Generated public key A: \(publicKey.hexEncodedString())")
@@ -73,7 +73,7 @@ public extension DeveloperPortal {
         else {
             let payload = prettyJSONString(from: initResponse)
             debugLog("[SideSign] Failed to parse authentication init response dictionary: missing c/s/i/B parameters")
-            throw ServerError.badServerResponse(reason: "Auth init response missing c/s/i/B parameters", jsonPayload: payload)
+            throw ServerError.badServerResponse(reason: "认证初始化响应缺少 c/s/i/B 参数", jsonPayload: payload)
         }
 
         verboseLog("""
@@ -91,7 +91,7 @@ public extension DeveloperPortal {
         guard let passwordData = password.data(using: .utf8),
               let digest = CryptoUtilities.sha256(passwordData) else {
             debugLog("[SideSign] Failed to compute SHA256 of password")
-            throw DeveloperPortalError.authenticationHandshakeFailed(cause: "Failed to compute SHA256 of password")
+            throw DeveloperPortalError.authenticationHandshakeFailed(cause: "计算密码的 SHA256 失败")
         }
 
         let inputDigest: Data = isHexadecimal ? Data(digest.hexEncodedString().utf8) : digest
@@ -102,7 +102,7 @@ public extension DeveloperPortal {
             outputLength: digest.count
         ) else {
             debugLog("[SideSign] Failed to derive PBKDF2 password key")
-            throw DeveloperPortalError.authenticationHandshakeFailed(cause: "Failed to derive PBKDF2 password key")
+            throw DeveloperPortalError.authenticationHandshakeFailed(cause: "派生 PBKDF2 密码密钥失败")
         }
 
         guard let verificationMessage = srpClient.processChallenge(
@@ -112,7 +112,7 @@ public extension DeveloperPortal {
             serverPublicKey: serverPublicKey
         ) else {
             debugLog("[SideSign] SRP challenge processing failed")
-            throw DeveloperPortalError.authenticationHandshakeFailed(cause: "SRP challenge processing failed")
+            throw DeveloperPortalError.authenticationHandshakeFailed(cause: "SRP 质询处理失败")
         }
 
         debugLog("[SideSign] Initiating SRP authentication step 2 (complete)...")
@@ -150,12 +150,12 @@ public extension DeveloperPortal {
 
         guard srpClient.verifyServerProof(serverVerificationMessage) else {
             debugLog("[SideSign] Server M2 verification message validation failed")
-            throw DeveloperPortalError.authenticationHandshakeFailed(cause: "Server verification proof (M2) mismatch")
+            throw DeveloperPortalError.authenticationHandshakeFailed(cause: "服务器验证凭据（M2）不匹配")
         }
 
         guard let sharedSecret = srpClient.sessionKey() else {
             debugLog("[SideSign] Failed to obtain session key from SRPClient")
-            throw DeveloperPortalError.authenticationHandshakeFailed(cause: "Missing session key")
+            throw DeveloperPortalError.authenticationHandshakeFailed(cause: "缺少会话密钥")
         }
 
         guard let spdKey = CryptoUtilities.hmacSHA256(key: sharedSecret, strings: ["extra data key:"]),
@@ -163,7 +163,7 @@ public extension DeveloperPortal {
               let decryptedData = CryptoUtilities.aesCBCDecrypt(key: spdKey, iv: spdIV, ciphertext: encryptedData)
         else {
             debugLog("[SideSign] Decryption of SPD payload failed")
-            throw DeveloperPortalError.authenticationHandshakeFailed(cause: "Failed to AES-CBC decrypt SPD payload")
+            throw DeveloperPortalError.authenticationHandshakeFailed(cause: "AES-CBC 解密 SPD 数据失败")
         }
 
         guard let decryptedDictionary = parsePlistOrJSON(decryptedData) else {
@@ -274,7 +274,7 @@ public extension DeveloperPortal {
         let app = customHeaders.grandSlam.authApp
         guard let checksum = CryptoUtilities.hmacSHA256(key: sessionKey, strings: ["apptokens", dsid, app]) else {
             debugLog("[SideSign] Failed to compute apptokens checksum")
-            throw DeveloperPortalError.authenticationHandshakeFailed(cause: "Failed to compute apptokens checksum")
+            throw DeveloperPortalError.authenticationHandshakeFailed(cause: "计算 apptokens 校验和失败")
         }
 
         let appTokensParameters: [String: any Sendable] = [
@@ -343,7 +343,7 @@ public extension DeveloperPortal {
 
         guard !data.isEmpty else {
             debugLog("[SideSign] Auth endpoint returned 0 bytes (HTTP \(statusCode))")
-            throw ServerError.badServerResponse(reason: "Auth endpoint returned empty response (0 bytes)", jsonPayload: "0 bytes")
+            throw ServerError.badServerResponse(reason: "认证端点返回空响应（0 字节）", jsonPayload: "0 bytes")
         }
 
         guard let responseDictionary = parsePlistOrJSON(data) else {
@@ -372,7 +372,7 @@ public extension DeveloperPortal {
             case GrandSlamAuthErrorCodes.incorrectVerificationCode:
                 throw DeveloperPortalError.incorrectVerificationCode(cause: errorDesc)
             default:
-                throw ServerError.underlyingError(code: errorCode, message: errorDesc ?? "Authentication failed")
+                throw ServerError.underlyingError(code: errorCode, message: errorDesc ?? "认证失败")
             }
         }
 
@@ -397,7 +397,7 @@ public extension DeveloperPortal {
 
         guard encryptedToken.count > 35 else {
             debugLog("[SideSign] Encrypted token payload is too short (length: \(encryptedToken.count))")
-            throw DeveloperPortalError.authenticationHandshakeFailed(cause: "Encrypted token payload is too short (\(encryptedToken.count) bytes)")
+            throw DeveloperPortalError.authenticationHandshakeFailed(cause: "加密令牌数据过短（\(encryptedToken.count) 字节）")
         }
 
         let aad = Data(encryptedToken[..<3])
@@ -407,7 +407,7 @@ public extension DeveloperPortal {
 
         guard let token = CryptoUtilities.aesGCMDecrypt(key: sessionKey, nonce: nonce, aad: aad, ciphertext: ciphertext, tag: tag) else {
             debugLog("[SideSign] Failed to AES-GCM decrypt auth token")
-            throw DeveloperPortalError.authenticationHandshakeFailed(cause: "Failed to AES-GCM decrypt auth token")
+            throw DeveloperPortalError.authenticationHandshakeFailed(cause: "AES-GCM 解密认证令牌失败")
         }
 
         guard let tokensDictionary = parsePlistOrJSON(token) else {
@@ -472,7 +472,7 @@ public extension DeveloperPortal {
                 let num = (item["numberWithDialCode"] as? String)
                         ?? (item["obfuscatedNumber"] as? String)
                         ?? (item["lastTwoDigits"] as? String).map { "••\($0)" }
-                        ?? "Phone \(id)"
+                        ?? "电话 \(id)"
                 results.append(TrustedPhoneNumber(id: id, number: num))
             }
         }
@@ -481,7 +481,7 @@ public extension DeveloperPortal {
             let num = (single["numberWithDialCode"] as? String)
                     ?? (single["obfuscatedNumber"] as? String)
                     ?? (single["lastTwoDigits"] as? String).map { "••\($0)" }
-                    ?? "Phone \(id)"
+                    ?? "电话 \(id)"
             results.append(TrustedPhoneNumber(id: id, number: num))
         }
         return results
@@ -628,7 +628,7 @@ public extension DeveloperPortal {
                 case .verificationCode(let code):
                     guard let channel = activeChannel else {
                         debugLog("[SideSign] Unexpected verification code returned before delivery method was selected.")
-                        throw DeveloperPortalError.authenticationHandshakeFailed(cause: "Unexpected verification code returned before a delivery method was selected.")
+                        throw DeveloperPortalError.authenticationHandshakeFailed(cause: "在选择验证方式之前就收到了验证码。")
                     }
 
                     let result: TwoFactorAuthValidationResult
@@ -683,7 +683,7 @@ public extension DeveloperPortal {
         guard statusCode == HTTPStatusCodes.ok else {
             let rawStr = prettyJSONString(from: data)
             debugLog("[SideSign] sendTrustedDevice2FACodeRequest failed (HTTP \(statusCode)): \(rawStr)")
-            throw ServerError.badServerResponse(reason: "Trusted device request failed (HTTP \(statusCode))", jsonPayload: rawStr)
+            throw ServerError.badServerResponse(reason: "受信任设备请求失败（HTTP \(statusCode)）", jsonPayload: rawStr)
         }
     }
 
@@ -736,11 +736,11 @@ public extension DeveloperPortal {
             || errorCode == GrandSlamAuthErrorCodes.rateLimited
             || statusCode == HTTPStatusCodes.tooManyRequests
         {
-            let msg = errorMsg ?? "Verification codes cannot be sent to this phone number at this time. Please try again later."
+            let msg = errorMsg ?? "目前无法向该手机号发送验证码，请稍后再试。"
             debugLog("[SideSign] sendPhone2FACodeRequest rate-limited (\(errorCode), HTTP \(statusCode)): \(msg)")
             throw DeveloperPortalError.tooManyAttempts(cause: msg)
         } else if errorCode != 0 {
-            let msg = errorMsg ?? "Failed to request verification code from Apple."
+            let msg = errorMsg ?? "向 Apple 请求验证码失败。"
             debugLog("[SideSign] sendPhone2FACodeRequest error (\(errorCode), HTTP \(statusCode)): \(msg)")
             throw ServerError.underlyingError(code: errorCode, message: msg)
         }
@@ -855,21 +855,21 @@ public extension DeveloperPortal {
             || errorCode == GrandSlamAuthErrorCodes.rateLimited
             || statusCode == HTTPStatusCodes.tooManyRequests
         {
-            let msg = errorMsg ?? "Too many verification code attempts. Please try again later."
+            let msg = errorMsg ?? "验证码尝试次数过多，请稍后再试。"
             debugLog("[SideSign] Too many 2FA attempts (\(errorCode), HTTP \(statusCode)): \(msg)")
             throw DeveloperPortalError.tooManyAttempts(cause: msg)
         } else if errorCode == GrandSlamAuthErrorCodes.incorrectVerificationCode {
-            let msg = errorMsg ?? "Incorrect verification code. Please try again."
+            let msg = errorMsg ?? "验证码不正确，请重试。"
             debugLog("[SideSign] Incorrect 2FA verification code (\(errorCode), HTTP \(statusCode)): \(msg)")
             return .retry(message: msg)
         } else if errorCode != 0 {
-            let msg = errorMsg ?? "2FA verification error"
+            let msg = errorMsg ?? "双重认证校验错误"
             debugLog("[SideSign] 2FA verification error (\(errorCode), HTTP \(statusCode)): \(msg)")
             throw ServerError.underlyingError(code: errorCode, message: msg)
         }
 
         if xmluiTitle != nil || xmluiMessage != nil {
-            let message = xmluiMessage ?? errorMsg ?? xmluiTitle ?? "Verification failed"
+            let message = xmluiMessage ?? errorMsg ?? xmluiTitle ?? "验证失败"
             debugLog("[SideSign] 2FA verification fatal alert from Apple (HTTP \(statusCode)): \(message)")
             throw DeveloperPortalError.invalid2FAResponse(cause: message)
         }
@@ -884,7 +884,7 @@ public extension DeveloperPortal {
         if requirePeToken {
             guard httpResponse?.allHeaderFields.keys.contains(where: { ($0 as? String)?.lowercased() == "x-apple-pe-token" }) == true else {
                 let rawStr = prettyJSONString(from: data)
-                let reason = errorMsg ?? "Incorrect verification code or missing session token"
+                let reason = errorMsg ?? "验证码不正确或缺少会话令牌"
                 debugLog("[SideSign] Secondary code verification failed (HTTP \(HTTPStatusCodes.ok) missing PE token header): \(reason) - Body: \(rawStr)")
                 return .retry(message: reason)
             }

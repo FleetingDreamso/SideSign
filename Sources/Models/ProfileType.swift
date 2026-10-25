@@ -108,17 +108,17 @@ public struct ProfileType: RawRepresentable, Sendable, Codable, Equatable, Hasha
 
     public var displayName: String {
         switch self {
-        case .iOS:          return "iOS App Development (ios)"
-        case .tvOS:         return "tvOS App Development (tvos)"
-        case .macOS:        return "macOS App Development (mac)"
-        case .visionOS:     return "visionOS App Development (visionos)"
-        case .driverKit:    return "DriverKit App Development (driverkit)"
-        case .adHoc:        return "Ad Hoc (adhoc)"
-        case .tvOSAdHoc:    return "tvOS Ad Hoc (tvos-adhoc)"
-        case .appStore:     return "App Store Connect (appstore)"
-        case .tvOSAppStore: return "tvOS App Store Connect (tvos-appstore)"
-        case .macAppStore:  return "Mac App Store Connect (mac-appstore)"
-        case .developerID:  return "Developer ID (developer-id)"
+        case .iOS:          return "iOS App 开发（ios）"
+        case .tvOS:         return "tvOS App 开发（tvos）"
+        case .macOS:        return "macOS App 开发（mac）"
+        case .visionOS:     return "visionOS App 开发（visionos）"
+        case .driverKit:    return "DriverKit App 开发（driverkit）"
+        case .adHoc:        return "Ad Hoc（adhoc）"
+        case .tvOSAdHoc:    return "tvOS Ad Hoc（tvos-adhoc）"
+        case .appStore:     return "App Store Connect（appstore）"
+        case .tvOSAppStore: return "tvOS App Store Connect（tvos-appstore）"
+        case .macAppStore:  return "Mac App Store Connect（mac-appstore）"
+        case .developerID:  return "Developer ID（developer-id）"
         default:            return rawValue
         }
     }

@@ -56,7 +56,7 @@ public struct KeyStore: Sendable, Equatable, Hashable, Identifiable {
             
         guard let x509 = X509Certificate(data: result.cert) else {
             debugLog("[SideSign] KeyStore error: Failed to parse certificate from PKCS#12 payload")
-            throw CertificateError.invalidData(cause: "Failed to parse certificate from PKCS#12 payload")
+            throw CertificateError.invalidData(cause: "无法从 PKCS#12 数据解析证书")
         }
 
         self.certificate = x509
@@ -67,7 +67,7 @@ public struct KeyStore: Sendable, Equatable, Hashable, Identifiable {
     public func exportP12(password: String? = nil) throws -> Data {
         guard let certData = certificate.data else {
             debugLog("[SideSign] KeyStore error: Certificate PEM data is missing")
-            throw CertificateError.invalidData(cause: "Certificate PEM data is missing")
+            throw CertificateError.invalidData(cause: "缺少证书 PEM 数据")
         }
         return try PKCS12Parser.create(
             cert: certData,

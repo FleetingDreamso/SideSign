@@ -105,7 +105,7 @@ public extension DeveloperPortal {
 
         // 1. Try idmsa DELETE endpoint
         guard let deleteURL = URL(string: "\(Constants.URLs.appleAuthDevices.absoluteString)/\(id)") else {
-            throw DeveloperPortalError.invalidParameters(cause: "Invalid device ID URL for '\(id)'")
+            throw DeveloperPortalError.invalidParameters(cause: "设备 ID 的 URL 无效：“\(id)”")
         }
         var request = URLRequest(url: deleteURL)
         request.httpMethod = "DELETE"

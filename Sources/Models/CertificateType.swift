@@ -101,15 +101,15 @@ public struct CertificateType: RawRepresentable, Sendable, Codable, Equatable, H
 
     public var displayName: String {
         switch self {
-        case .development:          return "Apple Development"
-        case .distribution:         return "Apple Distribution"
-        case .iosDevelopment:       return "iOS App Development"
-        case .iosDistribution:      return "iOS Distribution (App Store Connect and Ad Hoc)"
-        case .macDevelopment:       return "Mac Development"
-        case .macAppStore:          return "Mac App Distribution"
-        case .macInstaller:         return "Mac Installer Distribution"
-        case .developerIDInstaller: return "Developer ID Installer"
-        case .developerID:          return "Developer ID Application"
+        case .development:          return "Apple 开发"
+        case .distribution:         return "Apple 分发"
+        case .iosDevelopment:       return "iOS App 开发"
+        case .iosDistribution:      return "iOS 分发（App Store Connect 和 Ad Hoc）"
+        case .macDevelopment:       return "Mac 开发"
+        case .macAppStore:          return "Mac App 分发"
+        case .macInstaller:         return "Mac 安装器分发"
+        case .developerIDInstaller: return "Developer ID 安装器"
+        case .developerID:          return "Developer ID 应用"
         default:                    return rawValue.capitalized
         }
     }

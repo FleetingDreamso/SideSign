@@ -66,7 +66,7 @@ public extension DeveloperPortal {
 
         guard let device = response.device else {
             debugLog("[SideSign] registerDevice error: Missing registered device in response")
-            throw ServerError.badServerResponse(reason: "Missing registered device in response", jsonPayload: "")
+            throw ServerError.badServerResponse(reason: "响应中缺少已注册设备", jsonPayload: "")
         }
 
         debugLog("[SideSign] registerDevice succeeded")
