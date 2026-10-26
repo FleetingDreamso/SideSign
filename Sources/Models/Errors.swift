@@ -55,8 +55,8 @@ public enum DeveloperPortalError: Error, LocalizedError, Sendable {
         case .maximumAppIDLimitReached(let cause):              return "已达 App ID 数量上限：\(cause)"
         case .invalidAppGroup(let group):                       return "提供的 App 组无效：“\(group)”"
         case .appGroupDoesNotExist(let group):                  return "App 组不存在：“\(group)”"
-        case .invalidProvisioningProfileIdentifier(let id):     return "请求的配置文件标识符无效：“\(id)”"
-        case .provisioningProfileDoesNotExist(let id):          return "此团队中没有标识符为“\(id)”的配置文件。"
+        case .invalidProvisioningProfileIdentifier(let id):     return "请求的描述文件标识符无效：“\(id)”"
+        case .provisioningProfileDoesNotExist(let id):          return "此团队中没有标识符为“\(id)”的描述文件。"
         case .requiresTwoFactorAuthentication:                  return "此账号需要使用双重认证登录。"
         case .userCancelled:                                    return "操作已被用户取消。"
         case .incorrectVerificationCode(let cause):             return cause ?? "验证码不正确。"
@@ -108,7 +108,7 @@ public enum SignerError: Error, LocalizedError, Sendable {
         case .invalidApp(let cause):                            return "应用无效：\(cause)"
         case .missingAppBundle(let path):                       return "提供的路径中不包含应用包：\(path)"
         case .missingInfoPlist(let path):                       return "提供的应用缺少 Info.plist：\(path)"
-        case .missingProvisioningProfile(let bundleIdentifier): return "找不到与 Bundle 标识符“\(bundleIdentifier)”匹配的配置文件。"
+        case .missingProvisioningProfile(let bundleIdentifier): return "找不到与 Bundle 标识符“\(bundleIdentifier)”匹配的描述文件。"
         }
     }
 }

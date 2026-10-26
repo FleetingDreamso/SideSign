@@ -215,7 +215,7 @@ public enum HTTPStatusCodes {
         case badGateway:
             return "Apple 服务器收到了无效的网关响应。"
         case serviceUnavailable:
-            return "Apple 开发者门户暂时不可用或正在维护。"
+            return "Apple 开发者后台暂时不可用或正在维护。"
         case gatewayTimeout:
             return "Apple 服务器响应超时（连接超时）。"
         default:

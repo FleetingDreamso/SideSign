@@ -373,7 +373,7 @@ public final class DeveloperPortal: DeveloperPortalAPI, Sendable {
                 throw ServerError.underlyingError(code: -1, message: detail)
             }
             if let code = status.resultCode, code != DeveloperPortalResultCodes.success {
-                let message = status.userString ?? status.resultString ?? status.errorString ?? "Apple 开发者门户错误"
+                let message = status.userString ?? status.resultString ?? status.errorString ?? "Apple 开发者后台错误"
                 if let customError = resultCodeHandler?(code, message) {
                     debugLog("[SideSign] processResponse error (code: \(code)): \(customError.localizedDescription)")
                     throw customError
@@ -487,7 +487,7 @@ public final class DeveloperPortal: DeveloperPortalAPI, Sendable {
                 throw ServerError.underlyingError(code: -1, message: detail)
             }
             if let code = status.resultCode, code != DeveloperPortalResultCodes.success {
-                let message = status.userString ?? status.resultString ?? status.errorString ?? "Apple 开发者门户错误"
+                let message = status.userString ?? status.resultString ?? status.errorString ?? "Apple 开发者后台错误"
                 if let customError = resultCodeHandler?(code, message) {
                     debugLog("[SideSign] processResponse error (code: \(code)): \(customError.localizedDescription)")
                     throw customError
