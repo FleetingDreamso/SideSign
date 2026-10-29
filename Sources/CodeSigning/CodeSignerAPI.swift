@@ -68,7 +68,7 @@ public struct AppBundleSigner: CodeSignerAPI, Sendable {
         guard let appBundle = AppBundle(fileURL: appURL) else {
             debugLog("[SideSign] AppBundleSigner.signApp error: Failed to parse AppBundle")
             verboseLog("[SideSign] Path: \(appURL.path)")
-            throw SignerError.invalidApp(cause: "无法解析应用包：\(appURL.path)")
+            throw SignerError.invalidApp(cause: "解析应用包失败：\(appURL.path)")
         }
 
         debugLog("[SideSign] AppBundleSigner.signApp started")

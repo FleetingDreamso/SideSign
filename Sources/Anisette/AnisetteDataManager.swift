@@ -213,7 +213,7 @@ public enum AnisetteError: LocalizedError, Sendable {
         case .providerNotReady(let reason):
             return "本地 Anisette 提供程序尚未就绪：\(reason)"
         case .invalidAnisetteData:
-            return "无法从本地或远程 Anisette 请求头构造有效的 AnisetteData。"
+            return "从本地或远程 Anisette 请求头构造有效的 AnisetteData 失败。"
         case .badServerResponse(let statusCode, let payload):
             return "Anisette 服务器返回 HTTP 状态码 \(statusCode)：\(payload)"
         case .noServersConfigured:
@@ -222,7 +222,7 @@ public enum AnisetteError: LocalizedError, Sendable {
             return "所有已配置的 Anisette 服务器均未能返回有效的 Anisette 数据。"
         case .outdatedV1Server(let url, let reason):
             if let reason = reason, !reason.isEmpty {
-                return "服务器“\(url.absoluteString)”不支持 V3 Anisette（\(reason)），将使用旧版 V1 模式（共享设备身份）。"
+                return "V3 Anisette 在“\(url.absoluteString)”上不可用（\(reason)），将使用旧版 V1 模式（共享设备身份）。"
             } else {
                 return "Anisette 服务器“\(url.absoluteString)”正在使用过时的 V1 模式（共享设备身份）。"
             }

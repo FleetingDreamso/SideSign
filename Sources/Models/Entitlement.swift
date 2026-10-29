@@ -194,7 +194,7 @@ public extension Entitlement {
         case .userFonts:                        return "字体安装"
         case .carPlayMaps:                      return "CarPlay 导航"
         case .carPlayAudio:                     return "CarPlay 音频"
-        case .appAttest:                        return "App 证明"
+        case .appAttest:                        return "App Attest"
         case .dataProtection:                   return "数据保护"
         case .vpn:                              return "个人 VPN"
         case .networkExtensions:                return "网络扩展"

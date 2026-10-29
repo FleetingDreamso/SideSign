@@ -56,7 +56,7 @@ public struct KeyStore: Sendable, Equatable, Hashable, Identifiable {
             
         guard let x509 = X509Certificate(data: result.cert) else {
             debugLog("[SideSign] KeyStore error: Failed to parse certificate from PKCS#12 payload")
-            throw CertificateError.invalidData(cause: "无法从 PKCS#12 数据解析证书")
+            throw CertificateError.invalidData(cause: "从 PKCS#12 数据解析证书失败")
         }
 
         self.certificate = x509

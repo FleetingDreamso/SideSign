@@ -103,7 +103,7 @@ public extension DeveloperPortal {
                 return false
             }) else {
                 debugLog("[SideSign] addCertificate error: Failed to retrieve new certificate from Developer Portal")
-                throw ServerError.badServerResponse(reason: "无法从开发者后台获取新证书", jsonPayload: "")
+                throw ServerError.badServerResponse(reason: "从开发者后台获取新证书失败", jsonPayload: "")
             }
             cert = matchedCert
         }
