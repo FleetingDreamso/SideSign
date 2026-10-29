@@ -189,7 +189,7 @@ public extension Entitlement {
         case .criticalAlerts:                   return "关键警报"
         case .timeSensitiveNotifications:       return "时效性通知"
         case .communicationNotifications:       return "通信通知"
-        case .groupSession:                     return "Group Activities / 同播共享"
+        case .groupSession:                     return "Group Activities（同播共享）"
         case .weatherKit:                       return "WeatherKit"
         case .userFonts:                        return "字体安装"
         case .carPlayMaps:                      return "CarPlay 导航"
