@@ -736,7 +736,7 @@ public extension DeveloperPortal {
             || errorCode == GrandSlamAuthErrorCodes.rateLimited
             || statusCode == HTTPStatusCodes.tooManyRequests
         {
-            let msg = errorMsg ?? "目前无法向该手机号发送验证码，请稍后再试。"
+            let msg = errorMsg ?? "目前无法向此手机号发送验证码，请稍后再试。"
             debugLog("[SideSign] sendPhone2FACodeRequest rate-limited (\(errorCode), HTTP \(statusCode)): \(msg)")
             throw DeveloperPortalError.tooManyAttempts(cause: msg)
         } else if errorCode != 0 {
