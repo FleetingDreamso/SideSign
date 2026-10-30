@@ -209,7 +209,7 @@ public enum AnisetteError: LocalizedError, Sendable {
         case .missingRequiredLibs(let names):
             return "解压后的归档中未找到所需的 ADI 共享库（\(names.joined(separator: "、"))）。"
         case .appGroupContainerNotFound:
-            return "无法解析共享 App 组容器 URL。"
+            return "无法解析共享 App 小组容器 URL。"
         case .providerNotReady(let reason):
             return "本地 Anisette 提供程序尚未就绪：\(reason)"
         case .invalidAnisetteData:

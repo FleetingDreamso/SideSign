@@ -174,7 +174,7 @@ public extension Entitlement {
         case .extendedVirtualAddressing:        return "扩展虚拟寻址"
         case .increasedDebuggingMemoryLimit:    return "提高调试内存上限"
         case .getTaskAllow:                     return "Get-Task-Allow（JIT 调试）"
-        case .appGroups:                        return "App 组"
+        case .appGroups:                        return "App 小组"
         case .keychainAccessGroups:             return "钥匙串访问组"
         case .interAppAudio:                    return "应用间音频"
         case .pushNotifications:                return "推送通知"
